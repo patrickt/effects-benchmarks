@@ -29,7 +29,7 @@ doHttp = interpret
   (\x -> case x of
      Open _ -> pure ()
      Close  -> pure ()
-     Post a -> pure a
+     Post a -> pure ("posted" <> a)
      HGet   -> pure "gotten")
 
 runHttp :: HttpM a -> IO a

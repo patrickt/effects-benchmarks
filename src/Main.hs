@@ -9,14 +9,17 @@ import qualified Fused.Countdown as Fused
 import qualified Simple.Countdown as Simple
 import qualified Shallow.Countdown as Shallow
 import qualified MTL.Countdown as MTL
+import qualified Poly.Countdown as Poly
 
 import qualified Fused.HTTPM as Fused
 import qualified Simple.HTTPM as Simple
 import qualified MTL.HTTPM as MTL
 import qualified Shallow.HTTPM as Shallow
+import qualified Poly.HTTPM as Poly
 
 #define SUITE(nam,v) [ bench "fused-effects" (nf Fused.nam v) \
                      , bench "mtl" (nf MTL.nam v) \
+                     , bench "polysemy" (nf Poly.nam v) \
                      , bench "freer-simple" (nf Simple.nam v) \
                      , bench "shallow" (nf Shallow.nam v) ]
 
@@ -32,6 +35,7 @@ main = defaultMain
     ]
   , bgroup "HTTP"
     [ bench "fused-effects" (nfAppIO Fused.doHTTP runs)
+    , bench "polysemy" (nfAppIO Poly.doHTTP runs)
     , bench "Deep embedding" (nfAppIO MTL.doHTTP runs)
     , bench "Shallow embedding" (nfAppIO Shallow.doHTTP runs)
     , bench "freer-simple" (nfAppIO Simple.doHTTP runs)
