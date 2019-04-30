@@ -2,24 +2,39 @@
 
 module Main where
 
-import Gauge (bench, bgroup, nf)
+import Gauge (bench, bgroup, nf, nfAppIO)
 import Gauge.Main (defaultMain)
 
 import qualified Fused.Countdown as Fused
 import qualified Simple.Countdown as Simple
+import qualified Shallow.Countdown as Shallow
 import qualified MTL.Countdown as MTL
 
-#define SUITE(nam,bare) [ bench "fused-effects" (nf MTL.nam 10000) \
-                        , bench "mtl" (nf Fused.nam 10000) \
-                        , bench "freer-simple" (nf Simple.nam 10000) \
-                        , bench "manual" (nf bare 10000) ]
+import qualified Fused.HTTPM as Fused
+import qualified Simple.HTTPM as Simple
+import qualified MTL.HTTPM as MTL
+import qualified Shallow.HTTPM as Shallow
+
+#define SUITE(nam,v) [ bench "fused-effects" (nf Fused.nam v) \
+                     , bench "mtl" (nf MTL.nam v) \
+                     , bench "freer-simple" (nf Simple.nam v) \
+                     , bench "shallow" (nf Shallow.nam v) ]
+
+runs :: Int
+runs = 10000
 
 main :: IO ()
 main = defaultMain
   [
     bgroup "Countdown"
-    [ bgroup "Put" SUITE(countDownPut, bareDown)
-    , bgroup "Put+Exc" SUITE(countDownExc, bareDownExc)
+    [ bgroup "Put" SUITE(countDownPut, runs)
+    , bgroup "Put+Exc" SUITE(countDownExc, runs)
+    ]
+  , bgroup "HTTP"
+    [ bench "fused-effects" (nfAppIO Fused.doHTTP runs)
+    , bench "Deep embedding" (nfAppIO MTL.doHTTP runs)
+    , bench "Shallow embedding" (nfAppIO Shallow.doHTTP runs)
+    , bench "freer-simple" (nfAppIO Simple.doHTTP runs)
     ]
   ]
 
