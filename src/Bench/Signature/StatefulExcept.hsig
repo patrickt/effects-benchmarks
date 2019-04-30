@@ -1,0 +1,17 @@
+signature Bench.Signature.StatefulExcept
+  ( StateM
+  , get
+  , put
+  , throw
+  , runStatefulExcept
+  ) where
+
+data StateM a
+
+instance Applicative StateM
+instance Monad StateM
+
+get :: StateM Int
+put :: Int -> StateM ()
+throw :: String -> StateM a
+runStatefulExcept :: Int -> StateM a -> Either String (Int, a)

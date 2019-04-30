@@ -1,0 +1,17 @@
+{-# LANGUAGE KindSignatures #-}
+signature Bench.Signature.Stateful
+  ( StateM
+  , get
+  , put
+  , runStateful
+  ) where
+
+data StateM a
+
+instance Applicative StateM
+instance Monad StateM
+
+get :: StateM Int
+put :: Int -> StateM ()
+runStateful :: Int -> StateM a -> (Int, a)
+

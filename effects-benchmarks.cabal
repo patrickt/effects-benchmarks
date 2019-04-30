@@ -1,30 +1,61 @@
+cabal-version:       2.2
 name:                effects-benchmarks
 version:             0.1.0.0
--- synopsis:
--- description:
-homepage:            https://github.com/githubuser/effects-benchmarks#readme
-license:             BSD3
+homepage:            https://github.com/patrickt/effects-benchmarks#readme
+license:             BSD-3-Clause
 license-file:        LICENSE
 author:              Author name here
 maintainer:          example@example.com
 copyright:           2018 Author name here
 category:            Web
 build-type:          Simple
-cabal-version:       >=1.10
 extra-source-files:  README.md
 
-executable effects-benchmarks
-  hs-source-dirs:      src
-  main-is:             Main.hs
-  other-modules:       HigherOrder
-                     , JVEffects
-                     , MTL
-                     , FreerSimple
+common shared
   default-language:    Haskell2010
+  ghc-options:         -Wall -Werror -O1
   build-depends:       base >= 4.7 && < 5
-                     , higher-order-effects
-                     , effects
-                     , gauge
-                     , mtl
-                     , freer-simple
-  ghc-options:         -Wall -Werror -O2
+
+library benchmark-signatures
+  import:              shared
+  hs-source-dirs:      src
+  signatures:          Bench.Signature.Stateful
+                     , Bench.Signature.StatefulExcept
+  exposed-modules:     Bench.Countdown
+
+library instances-for-mtl
+  import:          shared
+  hs-source-dirs:  instances
+  exposed-modules: MTLStateful
+                 , MTL.StatefulExcept
+  build-depends:   mtl ^>= 2.2.2
+
+library instances-for-fused-effects
+  import:          shared
+  hs-source-dirs:  instances
+  exposed-modules: Fused.Stateful
+                 , Fused.StatefulExcept
+  build-depends:   fused-effects >= 0.3.1.0
+
+library instances-for-freer-simple
+  import:          shared
+  hs-source-dirs:  instances
+  exposed-modules: FSStateful
+                 , Freer.StatefulExcept
+  build-depends:   freer-simple ^>= 1.2.1
+
+benchmark effects-benchmarks
+  import:         shared
+  type:           exitcode-stdio-1.0
+  hs-source-dirs: src
+  build-depends:  benchmark-signatures
+                , instances-for-mtl
+                , instances-for-fused-effects
+                , instances-for-freer-simple
+                , dump-core
+                , gauge
+                , polysemy
+  main-is:        Main.hs
+  mixins:         benchmark-signatures (Bench.Countdown as MTL.Countdown) requires (Bench.Signature.Stateful as MTLStateful, Bench.Signature.StatefulExcept as MTL.StatefulExcept)
+                , benchmark-signatures (Bench.Countdown as Fused.Countdown) requires (Bench.Signature.Stateful as Fused.Stateful, Bench.Signature.StatefulExcept as Fused.StatefulExcept)
+                , benchmark-signatures (Bench.Countdown as Simple.Countdown) requires (Bench.Signature.Stateful as FSStateful, Bench.Signature.StatefulExcept as Freer.StatefulExcept)
