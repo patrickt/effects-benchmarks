@@ -1,6 +1,6 @@
 {-# LANGUAGE GADTs, LambdaCase #-}
 
-module MTL.DeepHTTP where
+module MTL.HTTP where
 
 import Control.Applicative
 import Control.Monad

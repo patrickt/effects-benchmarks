@@ -38,7 +38,7 @@ library instances-for-mtl
   hs-source-dirs:  instances
   exposed-modules: MTLStateful
                  , MTL.StatefulExcept
-                 , MTL.DeepHTTP
+                 , MTL.HTTP
   build-depends:   mtl ^>= 2.2.2
 
 library instances-for-fused-effects
@@ -70,7 +70,7 @@ benchmark effects-benchmarks
                 , gauge
                 , polysemy
   main-is:        Main.hs
-  mixins:         benchmark-signatures (Bench.Countdown as MTL.Countdown, Bench.HTTP as MTL.HTTPM) requires (Bench.Signature.Stateful as MTLStateful, Bench.Signature.StatefulExcept as MTL.StatefulExcept, Bench.Signature.HTTP as MTL.DeepHTTP)
+  mixins:         benchmark-signatures (Bench.Countdown as MTL.Countdown, Bench.HTTP as MTL.HTTPM) requires (Bench.Signature.Stateful as MTLStateful, Bench.Signature.StatefulExcept as MTL.StatefulExcept, Bench.Signature.HTTP as MTL.HTTP)
                 , benchmark-signatures (Bench.Countdown as Fused.Countdown, Bench.HTTP as Fused.HTTPM) requires (Bench.Signature.Stateful as Fused.Stateful, Bench.Signature.StatefulExcept as Fused.StatefulExcept, Bench.Signature.HTTP as Fused.HTTP)
                 , benchmark-signatures (Bench.Countdown as Simple.Countdown, Bench.HTTP as Simple.HTTPM) requires (Bench.Signature.Stateful as FSStateful, Bench.Signature.StatefulExcept as Freer.StatefulExcept, Bench.Signature.HTTP as Freer.HTTP)
                 , benchmark-signatures (Bench.Countdown as Shallow.Countdown, Bench.HTTP as Shallow.HTTPM) requires (Bench.Signature.Stateful as Shallow.Stateful, Bench.Signature.StatefulExcept as Shallow.StatefulExcept, Bench.Signature.HTTP as Shallow.HTTP)
