@@ -1,0 +1,19 @@
+signature Bench.Signature.HTTP
+  ( HttpM
+  , open'
+  , close'
+  , post'
+  , get'
+  , runHttp
+  ) where
+
+data HttpM a
+
+instance Applicative HttpM
+instance Monad HttpM
+
+open'  :: String -> HttpM ()
+get'   :: HttpM String
+post'  :: String -> HttpM String
+close' :: HttpM ()
+runHttp :: HttpM a -> IO a
