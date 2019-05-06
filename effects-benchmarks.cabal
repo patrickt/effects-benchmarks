@@ -33,6 +33,14 @@ library instances-for-shallow
                  , Shallow.Stateful
                  , Shallow.StatefulExcept
 
+library instances-for-exteff
+  import: shared
+  hs-source-dirs:  instances
+  exposed-modules: ExtEff.Stateful
+                 , ExtEff.StatefulExcept
+                 , ExtEff.HTTP
+  build-depends:   extensible-effects ^>= 5.0.0.1
+
 library instances-for-mtl
   import:          shared
   hs-source-dirs:  instances
@@ -75,8 +83,10 @@ benchmark effects-benchmarks
                 , instances-for-freer-simple
                 , instances-for-polysemy
                 , instances-for-shallow
+                , instances-for-exteff
                 , dump-core
                 , gauge
+                , weigh
                 , polysemy
   main-is:        Main.hs
   mixins:         benchmark-signatures (Bench.Countdown as MTL.Countdown, Bench.HTTP as MTL.HTTPM) requires (Bench.Signature.Stateful as MTLStateful, Bench.Signature.StatefulExcept as MTL.StatefulExcept, Bench.Signature.HTTP as MTL.HTTP)
@@ -84,3 +94,4 @@ benchmark effects-benchmarks
                 , benchmark-signatures (Bench.Countdown as Simple.Countdown, Bench.HTTP as Simple.HTTPM) requires (Bench.Signature.Stateful as FSStateful, Bench.Signature.StatefulExcept as Freer.StatefulExcept, Bench.Signature.HTTP as Freer.HTTP)
                 , benchmark-signatures (Bench.Countdown as Shallow.Countdown, Bench.HTTP as Shallow.HTTPM) requires (Bench.Signature.Stateful as Shallow.Stateful, Bench.Signature.StatefulExcept as Shallow.StatefulExcept, Bench.Signature.HTTP as Shallow.HTTP)
                 , benchmark-signatures (Bench.Countdown as Poly.Countdown, Bench.HTTP as Poly.HTTPM) requires (Bench.Signature.Stateful as Poly.Stateful, Bench.Signature.StatefulExcept as Poly.StatefulExcept, Bench.Signature.HTTP as Poly.HTTP)
+                , benchmark-signatures (Bench.Countdown as ExtEff.Countdown, Bench.HTTP as ExtEff.HTTPM) requires (Bench.Signature.Stateful as ExtEff.Stateful, Bench.Signature.StatefulExcept as ExtEff.StatefulExcept, Bench.Signature.HTTP as ExtEff.HTTP)
