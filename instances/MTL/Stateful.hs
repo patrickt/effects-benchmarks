@@ -1,4 +1,4 @@
-module MTLStateful where
+module MTL.Stateful where
 
 import qualified Control.Monad.State.Strict as MTL
 import Data.Tuple

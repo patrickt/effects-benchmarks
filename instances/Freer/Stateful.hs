@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeApplications, DataKinds #-}
 
-module FSStateful where
+module Freer.Stateful where
 
 import Control.Monad.Freer
 import Control.Monad.Freer.State as State
