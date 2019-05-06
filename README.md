@@ -101,5 +101,6 @@ time                 1.478 ms   (1.443 ms .. 1.515 ms)
 ```
 
 # Future work
-* More benchmarks: `Writer`, logging, `grammar`, `pipes`
+* More benchmarks: `Writer`, logging, `grammar`, `pipes`.
+* `polysemy` can probably get some more speed out of it: some of these results are slightly baffling.
 * I am going to make this emit pretty graphs, or at least graphable .csv files, someday.
