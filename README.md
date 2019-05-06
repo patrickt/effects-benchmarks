@@ -4,7 +4,7 @@ This is a set of memory and time benchmarks for the various Haskell effects libr
 
 # tl;dr
 
-`fused-effects` and `mtl` achieve roughly commensurate performance. `polysemy` is within an order of magnitude of `fused-effects` and `mtl`. `freer-simple` and `extensible-effects` are considerably slower.
+`fused-effects` and `mtl` achieve roughly commensurate performance. `polysemy` is within one to three orders of magnitude from `fused-effects` and `mtl`. `freer-simple` and `extensible-effects` are considerably slower.
 
 # Full results
 
