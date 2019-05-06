@@ -2,7 +2,11 @@
 
 This is a set of memory and time benchmarks for the various Haskell effects libraries, including `fused-effects`, `polysemy`, `freer-simple`, and `extensible-effects`. Benchmarks for equivalent `mtl` and handwritten computations are included for comparison purposes. It uses Cabal's new Backpack feature to save a great deal of boilerplate code.
 
-# Some results
+# tl;dr
+
+`fused-effects` and `mtl` achieve roughly commensurate performance. `polysemy` is within an order of magnitude of `fused-effects` and `mtl`. `freer-simple` and `extensible-effects` are considerably slower.
+
+# Full results
 
 On a 15-inch 2017 MacBook Pro (3.1GHz Intel i7, 16GB RAM), here are results for space benchmarks:
 
@@ -28,6 +32,8 @@ Countdown + exc
   shallow                   320
 ```
 
+(The fact that `fused-effects` and `mtl` have the same allocations is not an error; `fused-effects` was designed to have almost identical performance characteristics to `mtl`.)
+
 Time (`State`-based countdown):
 
 ```
@@ -36,11 +42,9 @@ time                 5.692 μs   (5.570 μs .. 5.835 μs)
 
 benchmarked Countdown/Put/mtl
 time                 5.500 μs   (5.386 μs .. 5.719 μs)
-variance introduced by outliers: 35% (moderately inflated)
 
 benchmarked Countdown/Put/polysemy
 time                 1.903 ms   (1.845 ms .. 1.954 ms)
-variance introduced by outliers: 72% (severely inflated)
 
 benchmarked Countdown/Put/freer-simple
 time                 1.324 ms   (1.282 ms .. 1.361 ms)
@@ -97,5 +101,5 @@ time                 1.478 ms   (1.443 ms .. 1.515 ms)
 ```
 
 # Future work
-
-I am going to make this emit pretty graphs, or at least graphable .csv files, someday.
+* More benchmarks: `Writer`, logging, `grammar`, `pipes`
+* I am going to make this emit pretty graphs, or at least graphable .csv files, someday.
