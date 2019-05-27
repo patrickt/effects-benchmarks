@@ -28,7 +28,6 @@ library benchmark-signatures
 library instances-for-shallow
   import:          shared
   hs-source-dirs:  instances
-  default-extensions: StrictData
   exposed-modules: Shallow.HTTP
                  , Shallow.Stateful
                  , Shallow.StatefulExcept
@@ -55,7 +54,7 @@ library instances-for-fused-effects
   exposed-modules: Fused.Stateful
                  , Fused.StatefulExcept
                  , Fused.HTTP
-  build-depends:   fused-effects >= 0.3.1.0
+  build-depends:   fused-effects >= 0.4.0.0
 
 library instances-for-freer-simple
   import:          shared
@@ -68,15 +67,18 @@ library instances-for-freer-simple
 library instances-for-polysemy
   import:          shared
   hs-source-dirs:  instances
+  ghc-options:     -fplugin=Polysemy.Plugin
   exposed-modules: Poly.Stateful
                  , Poly.StatefulExcept
                  , Poly.HTTP
-  build-depends:   polysemy ^>= 0.1.2
+  build-depends:   polysemy ^>= 0.2.1
+                 , polysemy-plugin ^>= 0.2.0.0
 
 benchmark effects-benchmarks
   import:         shared
   type:           exitcode-stdio-1.0
   hs-source-dirs: src
+  ghc-options:    -fplugin=Polysemy.Plugin
   build-depends:  benchmark-signatures
                 , instances-for-mtl
                 , instances-for-fused-effects
@@ -88,6 +90,7 @@ benchmark effects-benchmarks
                 , gauge
                 , weigh
                 , polysemy
+                , polysemy-plugin
   main-is:        Main.hs
   mixins:         benchmark-signatures (Bench.Countdown as MTL.Countdown, Bench.HTTP as MTL.HTTPM) requires (Bench.Signature.Stateful as MTL.Stateful, Bench.Signature.StatefulExcept as MTL.StatefulExcept, Bench.Signature.HTTP as MTL.HTTP)
                 , benchmark-signatures (Bench.Countdown as Fused.Countdown, Bench.HTTP as Fused.HTTPM) requires (Bench.Signature.Stateful as Fused.Stateful, Bench.Signature.StatefulExcept as Fused.StatefulExcept, Bench.Signature.HTTP as Fused.HTTP)
