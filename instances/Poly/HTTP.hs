@@ -1,10 +1,10 @@
-{-# LANGUAGE DataKinds, TemplateHaskell, KindSignatures, GADTs, FlexibleContexts, TypeOperators, LambdaCase #-}
+{-# LANGUAGE ScopedTypeVariables, DataKinds, TemplateHaskell, KindSignatures, GADTs, FlexibleContexts, TypeOperators, LambdaCase #-}
 
 module Poly.HTTP where
 
 import Polysemy
 
-type HttpM = Sem '[Http, Lift IO]
+type HttpM = Sem '[Http, Final IO]
 
 data Http (m :: * -> *) a where
   HOpen  :: String -> Http m ()
@@ -34,4 +34,4 @@ runHttp' = interpret $ \case
   HGet    -> pure "contents"
 
 runHttp :: HttpM a -> IO a
-runHttp = runM . runHttp'
+runHttp = runFinal . runHttp'

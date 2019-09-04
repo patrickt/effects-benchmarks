@@ -1,31 +1,23 @@
-{-# LANGUAGE TypeOperators, FlexibleInstances, KindSignatures, MultiParamTypeClasses, DeriveFunctor, UndecidableInstances, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DeriveAnyClass, DeriveFunctor, DeriveGeneric, DerivingStrategies, FlexibleInstances, GeneralizedNewtypeDeriving,
+             KindSignatures, MultiParamTypeClasses, TypeOperators, UndecidableInstances #-}
 
 module Fused.HTTP where
 
 import Control.Effect
-import Control.Effect.Sum
 import Control.Effect.Carrier
-import Data.Coerce
 import Control.Monad.IO.Class
+import GHC.Generics (Generic1)
 
 newtype HttpC m a = HttpC { runHttpC :: m a }
-  deriving (Applicative, Functor, Monad, MonadIO)
+  deriving newtype (Applicative, Functor, Monad, MonadIO)
 
 data HTTP (m :: * -> *) k
-  = Open String k
-  | Close k
-  | Post String (String -> k)
-  | HGet (String -> k)
-    deriving Functor
-
-instance Effect HTTP where
-  handle state handler (Open s k) = Open s (handler . (<$ state) $ k)
-  handle state handler (Close k) = Close (handler . (<$ state) $ k)
-  handle state handler (Post s k) = Post s (handler . (<$ state) . k)
-  handle state handler (HGet k) = HGet (handler . (<$ state) . k)
-
-instance HFunctor HTTP where
-  hmap _ = coerce
+  = Open String (m k)
+  | Close (m k)
+  | Post String (String -> m k)
+  | HGet (String -> m k)
+    deriving stock (Functor, Generic1)
+    deriving anyclass (HFunctor, Effect)
 
 open' :: String -> HttpM ()
 open' s = send (Open s (pure ()))
@@ -46,7 +38,7 @@ instance (Effect sig, Carrier sig m) => Carrier (HTTP :+: sig) (HttpC m) where
     Open _ k -> k
     Close k  -> k
     Post s k -> k ("posted " <> s)
-    HGet k    -> k "lmao"
+    HGet k   -> k "lmao"
   eff (R other) = HttpC (eff (handleCoercible other))
 
 runHttp :: HttpM a -> IO a
