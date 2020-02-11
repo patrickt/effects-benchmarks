@@ -11,6 +11,8 @@ category:            Web
 build-type:          Simple
 extra-source-files:  README.md
 
+ghc-options:         -Wall -Werror -O2 -flate-specialise
+
 common shared
   default-language:    Haskell2010
   ghc-options:         -Wall -Werror -O2 -flate-specialise
@@ -54,7 +56,7 @@ library instances-for-fused-effects
   exposed-modules: Fused.Stateful
                  , Fused.StatefulExcept
                  , Fused.HTTP
-  build-depends:   fused-effects >= 0.5
+  build-depends:   fused-effects ^>= 0.5
 
 library instances-for-freer-simple
   import:          shared
@@ -71,6 +73,7 @@ library instances-for-polysemy
                  , Poly.StatefulExcept
                  , Poly.HTTP
   build-depends:   polysemy ^>= 1.2
+                 , polysemy-plugin
 
 benchmark effects-benchmarks
   import:         shared

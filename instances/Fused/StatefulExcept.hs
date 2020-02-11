@@ -2,7 +2,7 @@
 
 module Fused.StatefulExcept where
 
-import Control.Effect (run, PureC)
+import Control.Effect (PureC)
 import Control.Effect.State.Strict as State
 import Control.Effect.Error
 

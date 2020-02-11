@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds, TypeApplications #-}
+{-# OPTIONS_GHC -fplugin=Polysemy.Plugin #-}
 
 module Poly.Stateful where
 

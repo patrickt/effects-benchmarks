@@ -2,7 +2,7 @@
 
 module Fused.Stateful where
 
-import Control.Effect (run, PureC)
+import Control.Effect (PureC)
 import Control.Effect.State.Lazy as State
 
 type StateM = StateC Int PureC

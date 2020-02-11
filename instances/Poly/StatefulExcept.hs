@@ -1,4 +1,6 @@
 {-# LANGUAGE TypeApplications, DataKinds #-}
+{-# OPTIONS_GHC -fplugin=Polysemy.Plugin #-}
+
 module Poly.StatefulExcept where
 
 import Polysemy
