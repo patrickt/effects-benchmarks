@@ -56,7 +56,7 @@ library instances-for-fused-effects
   exposed-modules: Fused.Stateful
                  , Fused.StatefulExcept
                  , Fused.HTTP
-  build-depends:   fused-effects ^>= 0.5
+  build-depends:   fused-effects == 0.5.0.1
 
 library instances-for-freer-simple
   import:          shared
@@ -86,7 +86,7 @@ benchmark effects-benchmarks
                 , instances-for-polysemy
                 , instances-for-shallow
                 , instances-for-exteff
-                , dump-core
+                -- , dump-core
                 , gauge
                 , weigh
                 , polysemy

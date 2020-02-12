@@ -1,6 +1,7 @@
 packages: .
 
-allow-newer: all
+allow-newer: template-haskell, base, ghc, Cabal, Win32
+constraints: any.Cabal ==3.0.*
 
 source-repository-package
     type: git
@@ -10,10 +11,10 @@ source-repository-package
 source-repository-package
     type: git
     location: https://github.com/Avi-D-coder/polysemy.git
-    tag: 256da5bb03bb373e33f3338e29bf8a97b40953c0
+    tag: 8ea93bcb0205b99c9bbc2fbc9651e0bb6750b252
     subdir: polysemy-plugin
 
 source-repository-package
     type: git
     location: https://github.com/Avi-D-coder/polysemy.git
-    tag: 256da5bb03bb373e33f3338e29bf8a97b40953c0
+    tag: 8ea93bcb0205b99c9bbc2fbc9651e0bb6750b252
