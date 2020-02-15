@@ -1,4 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables, DataKinds, TemplateHaskell, KindSignatures, GADTs, FlexibleContexts, TypeOperators, LambdaCase #-}
+{-# OPTIONS_GHC -fplugin=Polysemy.Plugin #-}
 
 module Poly.HTTP where
 

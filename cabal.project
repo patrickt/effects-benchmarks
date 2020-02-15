@@ -1,0 +1,20 @@
+packages: .
+
+allow-newer: template-haskell, base, ghc, Cabal, Win32
+constraints: any.Cabal ==3.0.*
+
+source-repository-package
+    type: git
+    location: https://github.com/Avi-D-coder/loopbreaker.git
+    tag: 96a4351586b681927f2b0f7d50d6292281e55b4b
+
+source-repository-package
+    type: git
+    location: https://github.com/Avi-D-coder/polysemy.git
+    tag: 8ea93bcb0205b99c9bbc2fbc9651e0bb6750b252
+    subdir: polysemy-plugin
+
+source-repository-package
+    type: git
+    location: https://github.com/Avi-D-coder/polysemy.git
+    tag: 8ea93bcb0205b99c9bbc2fbc9651e0bb6750b252
