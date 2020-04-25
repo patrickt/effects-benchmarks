@@ -54,7 +54,7 @@ library instances-for-fused-effects
   exposed-modules: Fused.Stateful
                  , Fused.StatefulExcept
                  , Fused.HTTP
-  build-depends:   fused-effects >= 0.5
+  build-depends:   fused-effects >= 1.0.2.1
 
 library instances-for-freer-simple
   import:          shared
@@ -70,7 +70,7 @@ library instances-for-polysemy
   exposed-modules: Poly.Stateful
                  , Poly.StatefulExcept
                  , Poly.HTTP
-  build-depends:   polysemy ^>= 1.2
+  build-depends:   polysemy ^>= 1.3
 
 benchmark effects-benchmarks
   import:         shared
@@ -83,11 +83,9 @@ benchmark effects-benchmarks
                 , instances-for-polysemy
                 , instances-for-shallow
                 , instances-for-exteff
-                , dump-core
                 , gauge
                 , weigh
                 , polysemy
-                , polysemy-plugin
   main-is:        Main.hs
   mixins:         benchmark-signatures (Bench.Countdown as MTL.Countdown, Bench.HTTP as MTL.HTTPM) requires (Bench.Signature.Stateful as MTL.Stateful, Bench.Signature.StatefulExcept as MTL.StatefulExcept, Bench.Signature.HTTP as MTL.HTTP)
                 , benchmark-signatures (Bench.Countdown as Fused.Countdown, Bench.HTTP as Fused.HTTPM) requires (Bench.Signature.Stateful as Fused.Stateful, Bench.Signature.StatefulExcept as Fused.StatefulExcept, Bench.Signature.HTTP as Fused.HTTP)

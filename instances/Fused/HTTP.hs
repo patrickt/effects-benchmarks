@@ -3,8 +3,8 @@
 
 module Fused.HTTP where
 
-import Control.Effect
-import Control.Effect.Carrier
+import Control.Algebra
+import Control.Carrier.Lift
 import Control.Monad.IO.Class
 import GHC.Generics (Generic1)
 
@@ -33,13 +33,13 @@ get' = send (HGet pure)
 
 type HttpM = HttpC (LiftC IO)
 
-instance (Effect sig, Carrier sig m) => Carrier (HTTP :+: sig) (HttpC m) where
-  eff (L act) = case act of
+instance (Effect sig, Algebra sig m) => Algebra (HTTP :+: sig) (HttpC m) where
+  alg (L act) = case act of
     Open _ k -> k
     Close k  -> k
     Post s k -> k ("posted " <> s)
     HGet k   -> k "lmao"
-  eff (R other) = HttpC (eff (handleCoercible other))
+  alg (R other) = HttpC (alg (handleCoercible other))
 
 runHttp :: HttpM a -> IO a
 runHttp = runM . runHttpC
