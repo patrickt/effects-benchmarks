@@ -2,10 +2,10 @@
 
 module Fused.Stateful where
 
-import Control.Effect (run, PureC)
-import Control.Effect.State.Lazy as State
+import Control.Carrier.State.Lazy as State
+import Data.Functor.Identity
 
-type StateM = StateC Int PureC
+type StateM = StateC Int Identity
 
 get :: StateM Int
 get = State.get @Int

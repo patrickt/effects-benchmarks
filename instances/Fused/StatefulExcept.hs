@@ -2,11 +2,11 @@
 
 module Fused.StatefulExcept where
 
-import Control.Effect (run, PureC)
-import Control.Effect.State.Strict as State
-import Control.Effect.Error
+import Control.Carrier.State.Strict as State
+import Control.Carrier.Error.Either
+import Data.Functor.Identity
 
-type StateM = StateC Int (ErrorC String PureC)
+type StateM = StateC Int (ErrorC String Identity)
 
 get :: StateM Int
 get = State.get @Int
