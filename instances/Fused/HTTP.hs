@@ -1,45 +1,42 @@
 {-# LANGUAGE DeriveAnyClass, DeriveFunctor, DeriveGeneric, DerivingStrategies, FlexibleInstances, GeneralizedNewtypeDeriving,
-             KindSignatures, MultiParamTypeClasses, TypeOperators, UndecidableInstances #-}
+             KindSignatures, MultiParamTypeClasses, TypeOperators, UndecidableInstances, GADTs #-}
 
 module Fused.HTTP where
 
 import Control.Algebra
 import Control.Monad.IO.Class
-import GHC.Generics (Generic1)
 import Control.Carrier.Lift
 
 newtype HttpC m a = HttpC { runHttpC :: m a }
   deriving newtype (Applicative, Functor, Monad, MonadIO)
 
-data HTTP (m :: * -> *) k
-  = Open String (m k)
-  | Close (m k)
-  | Post String (String -> m k)
-  | HGet (String -> m k)
-    deriving stock (Functor, Generic1)
-    deriving anyclass (HFunctor, Effect)
+data HTTP (m :: * -> *) k where
+  Open :: String -> HTTP m ()
+  Close :: HTTP m ()
+  Post :: String -> HTTP m String
+  HGet :: HTTP m String
 
 open' :: String -> HttpM ()
-open' s = send (Open s (pure ()))
+open' s = send (Open s)
 
 close' :: HttpM ()
-close' = send (Close (pure ()))
+close' = send (Close)
 
 post' :: String -> HttpM String
-post' s = send (Post s pure)
+post' s = send (Post s)
 
 get' :: HttpM String
-get' = send (HGet pure)
+get' = send (HGet)
 
 type HttpM = HttpC (LiftC IO)
 
-instance (Effect sig, Algebra sig m) => Algebra (HTTP :+: sig) (HttpC m) where
-  alg (L act) = case act of
-    Open _ k -> k
-    Close k  -> k
-    Post s k -> k ("posted " <> s)
-    HGet k   -> k "lmao"
-  alg (R other) = HttpC (alg (handleCoercible other))
+instance (Algebra sig m) => Algebra (HTTP :+: sig) (HttpC m) where
+  alg hdl sig ctx = case sig of
+    L (Open _) -> pure (() <$ ctx)
+    L Close -> pure (() <$ ctx)
+    L (Post s) -> pure (("posted " <> s) <$ ctx)
+    L (HGet) -> pure ("lmao" <$ ctx)
+    R other -> HttpC (alg (runHttpC . hdl) other ctx)
 
 runHttp :: HttpM a -> IO a
 runHttp = runM . runHttpC
